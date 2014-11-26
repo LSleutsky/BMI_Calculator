@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BMI Calculator</title>
+    <style>
+      body {
+        background: #fff;
+      }
+
+      h1 {
+        font-size: 30px; 
+        color: red;
+        font-weight: bolder;
+        text-align: center;
+        text-decoration: underline;
+      }
+
+      h2 {
+        font-size: 25px;
+        color:#009933;
+        line-height:0.5;
+      }
+
+      h3 {
+        font-size: 17px;
+        color: #009933;
+        font-family: "Calibri";
+        font-weight: bolder;
+        line-height: .5;
+      }
+
+      h4 {
+        font-size: 25px;
+        color: red;
+        font-weight:bold;
+        line-height:0.1;
+      }
+
+      h5 {
+        font-size: 20px;
+        color:red;
+        font-family:"Calibri";
+      }
+
+      #BMI {
+        font-size: 40px;
+      }
+
+      form {
+        width: 500px;
+      	margin: 0 auto;
+        border: 2px solid #666;
+        border-radius: 1.5em;
+      	padding: 16px;
+      	background: #fff;
+        text-align: center;
+      }
+
+      input, textarea {
+        width: 65px;
+      	background: 10px 10px 5px #FFFFD6;
+      	color: blue;
+      	font-weight: bold;
+        margin-right: 5px;
+      }
+
+      input[type="button"] {
+        color: #000;
+        padding: 5px;
+        border-radius: 1px;
+        outline: none;
+      }
+
+      input[type="number"] {
+        font-size: 26px;
+      }
+    </style>
+</head>
+<body>
+  <form>
+    <h1>BMI Calculator </h1>
+    <h6>(Note: A BMI is a rough estimate of what kind of shape you're in. It is more-so accurate for sedentary people, versus athletes)</h6>
+
+    <label for="weight">
+    <h3>Enter your weight:</h3>
+    <input type="number" id="weight" name="weight"><strong>lbs.</strong>
+    </label>
+    <br>
+
+    <label for="height">
+    <h3>Enter your height:</h3>
+    <input type="number" id="height" name="height" max="9"><strong>ft.</strong>
+    </label>
+
+    <p><input type="range" min="0" max="11" value="0" step="1"  id="inches" style="width:90px;" oninput="slider()" onchange="slider()">
+    <b><label id="height_inches">0 </label>in.</b></p>
+
+    <input type="button" value="Calculate" onClick="BMICalculate()" style="width:90px;"> 
+    <input type="button" value="Reset" onClick="reset()" style="width:90px;">
+
+    <h2>Your BMI is:</h2>
+
+    <!-- Output BMI value and description of the index -->
+    <h4><label id="BMI"></label></h4>
+    <h5><label id="output"></label></h5>
+  </form>
+
+  <script type = "text/javascript">
+    function BMICalculate() {
+      var weight = document.getElementById('weight').value;
+      var height = document.getElementById('height').value;
+
+      if (weight == "") {
+        alert("Please enter your weight.");
+        return;
+      }
+
+      if (weight < 0) {
+        alert("Please enter a legitimate weight in pounds...");
+        return;
+      }
+
+      if (weight < 30) {
+        alert("If you're an adult, then you can't possibly weigh that much.");
+        return;
+      }
+
+      if (weight > 700) {
+        alert("Do you really weigh " + weight + " pounds?!");
+        return;
+      }
+
+      if (height == "") {
+        alert("Please enter your height.");
+        return;
+      }
+
+      if (height < 0) {
+        alert("Please enter a legitimate height...");
+        return;
+      }
+
+      if (height < 3) {
+        alert(height +" feet tall, eh? Highly unlikely. Please enter your real height...");
+        return;
+      }
+
+      var inches = document.getElementById('inches').value;
+      var height = height * 12 + (+inches);
+      
+      /* Commonly used BMI formula*/
+      BMI.innerHTML = Math.round((weight / (height * height)) * 703.06957964);
+      
+      getDescription(BMI.innerHTML);
+    }
+  	
+    function slider()	{
+      height_inches.innerHTML = document.getElementById('inches').value;
+    }
+  	
+    function getDescription(mainBMI) {
+      var Description = "";
+      if (mainBMI < 18.5) {
+        Description = "A little too light. Grab a burger!";
+      } else if (mainBMI >= 18.5 && mainBMI <= 24.99) {
+        Description = "All things equal - nice work!";
+      } else if (mainBMI >= 25 && mainBMI <= 29.99) {
+        Description = "You are overweight! Put those chips down";
+      } else if (mainBMI >= 30 && mainBMI <= 39.99) {
+        Description = "No offense, but you're obese! Get movin'";
+      } else if (mainBMI >= 40) {
+        Description = "You are morbidly obese, and something must be done!";
+      } else {
+        Description = "Cannot calculate BMI. Check your inputs.";
+      }
+          
+      var output = document.getElementById('output');
+      output.innerHTML = Description;
+    }
+  	
+  	function reset() {
+  		document.getElementById('weight').value = "";
+  		document.getElementById('height').value = "";
+  		document.getElementById('inches').value = "3";
+  		document.getElementById('BMI').value = "";
+  		document.getElementById('output').value = "";
+  		BMI.innerHTML = "";
+  		output.innerHTML = "";
+    }
+  </script>
+</body>
+</html>
